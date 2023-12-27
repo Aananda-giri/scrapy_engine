@@ -53,7 +53,7 @@ while new_start_url != []:
         # running locally
 
         # run scrapy
-        run_scrapy_with_new_start_url(new_start_url, file_name)q
+        run_scrapy_with_new_start_url(new_start_url, file_name)
         
         # remove url crawled from start_urls
         remove_one_url(new_start_url)
