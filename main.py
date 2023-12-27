@@ -39,7 +39,9 @@ def get_domain_name(url):
 
 def run_scrapy_with_new_start_url(new_start_url, file_name):
     spider_name = 'ekantipur'
-    subprocess.run(['scrapy', 'crawl', spider_name, '-O', '/content/' + file_name, '-a', 'start_url=' + new_start_url])
+    subprocess.run(['scrapy', 'crawl', spider_name, '-a', 'start_url=' + new_start_url])
+    # output to file to resume later
+    # subprocess.run(['scrapy', 'crawl', spider_name, '-O', '/content/' + file_name, '-a', 'start_url=' + new_start_url])
 
 # Example usage:
 new_start_url = get_one_start_url()
