@@ -106,14 +106,15 @@ while new_start_url != []:
     if not 'google' in os.uname().release:
         # running locally
 
-        # run scrapy
-        run_scrapy_with_new_start_url(new_start_url, start_file_name, domain_name)
-        
-        # remove url crawled from start_urls
-        remove_one_url(new_start_url)
-
-        # get new start url
-        new_start_url = get_one_start_url()
+        try:
+            # run scrapy
+            run_scrapy_with_new_start_url(new_start_url, start_file_name, domain_name)
+            
+            # remove url crawled from start_urls
+            remove_one_url(new_start_url)
+        except:
+            # get new start url
+            new_start_url = get_one_start_url()
         
     else:
         # running on google colab
