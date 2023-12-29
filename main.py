@@ -16,7 +16,7 @@ import shutil
 
 if 'REPL_SLUG' in os.environ:
     print("Code is running in Replit!")
-    from keep_alive import keep_alive
+    from flask_app import keep_alive
     keep_alive()
 
 print("running.....")
