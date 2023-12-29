@@ -20,7 +20,7 @@ NEWSPIDER_MODULE = "scrapy_engine.spiders"
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS =  45   # 32
+CONCURRENT_REQUESTS =  10 # 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -75,7 +75,7 @@ AUTOTHROTTLE_START_DELAY = 2#5
 AUTOTHROTTLE_MAX_DELAY = 60
 # The average number of requests Scrapy should be sending in parallel to
 # each remote server
-AUTOTHROTTLE_TARGET_CONCURRENCY = 15 #1.0
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 # Enable showing throttling stats for every response received:
 #AUTOTHROTTLE_DEBUG = False
 
@@ -91,4 +91,11 @@ HTTPCACHE_ENABLED = True
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
-LOG_LEVEL='INFO'
+
+
+# LOG_LEVEL='INFO'    # overview of program execution
+#LOG_LEVEL='DEBUG'   # detailed information about program execution
+#LOG_LEVEL='WARNING' # only show warnings and errors
+LOG_LEVEL='ERROR'   # only show errors
+#LOG_LEVEL='CRITICAL' # only show critical errors
+#LOG_LEVEL='NOTSET'  # show everything

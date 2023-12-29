@@ -6,6 +6,67 @@ import os
 from pathlib import Path
 from urllib.parse import urlparse
 
+
+
+
+
+def get_resume_urls(domain_name_to_resume_from):
+    '''
+    -------------
+     pseudocode:
+    -------------
+
+    domain_name_to_resume_from = ekantipur
+
+    while there is file ['ekantipur.json', 'ekantipur_0.json', 'ekantipur_1.json', ...]:
+        urls_to_visit.add(to_visited_urls)
+        urls_visited.add(visited_urls)
+    
+    fro url in urls_to_visit:
+        add url to news_urls if url is not present in urls_visited
+    
+    return list(news_urls)
+    '''
+    
+    new_file_name = domain_name_to_resume_from + '.json'
+    
+    urls_to_visit = set()
+    urls_visited = self.visited_urls = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.LARGE_SET_GROWTH)
+    news_start_ulrs = set()
+    
+    while os.path.exists(new_file_name):
+        try:
+            with open(new_file_name, 'r') as file:
+                data = json.load(file)
+        except:
+            '''
+               file is corrupt when scrapy is terminated while it is still crawling.
+               while corrupt, file is terminated with: `{dome_data},`
+               adding : `""]` at the end of file to make it valid json file
+
+            '''
+            with open('log_file.json', 'a') as file:
+                file.write("\"\"]")
+            
+            with open(new_file_name, 'r') as file:
+                data = json.load(file)
+        for each_data in data:
+            if 'to_visit' in each_data.keys():
+                urls_to_visit.add(each_data['to_visit'])  # each_data['to_visit'] is a of urls
+            
+            if 'visited' in data.keys():
+                urls_visited.add(each_data['visited'])  # each_data['visited'] is a url
+        
+        new_file_name = domain_name + f'_{index}.json'
+        index += 1
+    
+    for to_visit in urls_to_visit:
+        if to_visit not in urls_visited:
+            news_start_ulrs.add(to_visit)
+    
+    return news_start_ulrs
+
+
 def is_nepali_language(text):
     lang, confidence = langid.classify(text)
     return lang == 'hi', confidence
@@ -58,14 +119,14 @@ def is_np_domain(url):
     
     return base_url[-3:] == '.np'
 
-def should_we_crawl_it(visited_urls_base, new_url):
+def should_we_crawl_it(new_url, visited_urls_base=None):
     # return true if it is one of first 1000 .np domain
     parsed_url = urlparse(new_url)
     base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
     
     # crawl it if .np domain and len(visited_urls_base) < 50
     
-    if base_url[-3:] == '.np' and len(visited_urls_base)<50:
+    if base_url[-3:] == '.np' and (visited_urls_base==None or len(visited_urls_base)<50):
         return base_url, True
     else:
         return base_url, False

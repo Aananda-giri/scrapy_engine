@@ -30,16 +30,34 @@ def remove_one_url(one_url):
 
     return one_url
 
-def get_domain_name(url):
+def get_file_name(url):
     parsed_url = urlparse(url)
     domain_name = parsed_url.netloc   # https://www.example.com
-    return domain_name
+    file_name = domain_name + '.json'
+    
+    index = 0
+    while os.path.exists(file_name):
+        file_name = domain_name + f'_{index}.json'
+        index += 1
+    
+    return file_name, domain_name
+
     # print(domain_name)
     # return domain_name.split('.')[1]  # example
 
-def run_scrapy_with_new_start_url(new_start_url, file_name):
-    spider_name = 'ekantipur'
-    subprocess.run(['scrapy', 'crawl', spider_name, '-O', file_name, '-a', 'start_url=' + new_start_url])
+def run_scrapy_with_new_start_url(new_start_url, file_name, domain_name_to_resume_from):
+    
+    
+    if file_name == domain_name_to_resume_from + '.json':
+        # new crawling. not resuming
+        spider_name = 'ekantipur'
+        subprocess.run(['scrapy', 'crawl', spider_name, '-O', file_name, '-a', 'start_url=' + new_start_url])
+    else:
+        # resuming
+        spider_name = 'ekantipur'
+        subprocess.run(['scrapy', 'crawl', spider_name, '-O', file_name, '-a', 'start_url=' + new_start_url, '-a', 'domain_name_to_resume_from=' + domain_name_to_resume_from])
+
+    # !scrapy crawl spider_name -O file_name -a start_url= new_start_url
     # output to file to resume later
     # subprocess.run(['scrapy', 'crawl', spider_name, '-O', '/content/' + file_name, '-a', 'start_url=' + new_start_url])
 
@@ -49,13 +67,13 @@ new_start_url = get_one_start_url()
 while new_start_url != []:
     print(f'\n\n new_start_url:{new_start_url} \n\n')
     # new_start_url = 'https://onlinetvnepal.com/'
-    file_name = get_domain_name(new_start_url) + '.json'
+    start_file_name, domain_name = get_file_name(new_start_url)
 
     if not 'google' in os.uname().release:
         # running locally
 
         # run scrapy
-        run_scrapy_with_new_start_url(new_start_url, file_name)
+        run_scrapy_with_new_start_url(new_start_url, file_name, domain_name)
         
         # remove url crawled from start_urls
         remove_one_url(new_start_url)

@@ -1,4 +1,4 @@
-from .functions import is_social_media_link, is_nepali_language, is_document_link, is_google_drive_link, should_we_crawl_it, is_same_domain, is_np_domain
+from .functions import is_social_media_link, is_nepali_language, is_document_link, is_google_drive_link, should_we_crawl_it, is_same_domain, is_np_domain, get_resume_urls
 
 import scrapy
 # from scrapy.spiders import CrawlSpider, Rule
@@ -18,8 +18,6 @@ def get_one_url():
         urls = json.dump(urls, file)
     
     return one_url
-
-# url = get_one_url()
 
 class MySpider(scrapy.Spider):
     '''
@@ -42,10 +40,13 @@ class MySpider(scrapy.Spider):
         super(MySpider, self).__init__(*args, **kwargs)
         
         self.start_urls = [kwargs.get('start_url')] 
-        print(f'\n\n start_urls: self.start_urls \n\n')
+        domain_name_to_resume_from = kwargs.get('domain_name_to_resume_from')
+        if domain_name_to_resume_from:
+            self.start_urls = get_resume_urls(domain_name_to_resume_from)
+        print(f'\n\n start_urls: {self.start_urls} \n\n')
         # using bloom filter to store visited urls for faster lookup
-        self.visited_urls = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.SMALL_SET_GROWTH)
-        self.visited_urls_base = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.SMALL_SET_GROWTH)
+        self.visited_urls = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.LARGE_SET_GROWTH)    # pybloom_live.ScalableBloomFilter.SMALL_SET_GROWTH means
+        # self.visited_urls_base = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.SMALL_SET_GROWTH)
         # self.length = 0
     
     def parse(self, response):
@@ -54,6 +55,10 @@ class MySpider(scrapy.Spider):
         drive_links = []    # Drive links
         site_links = []     # website links
         
+        yield {
+            'visited': response.url,
+            }
+
         # yield every paragraph from current page
         paragraphs = response.css('p::text').getall()
         for paragraph in paragraphs:
@@ -106,8 +111,8 @@ class MySpider(scrapy.Spider):
         # Follow Next Page: 
         for site_link in site_links:
             
-            base_url, crawl_it = should_we_crawl_it(self.visited_urls_base, site_link.url)
-            self.visited_urls_base.add(base_url)
+            # base_url, crawl_it = should_we_crawl_it(site_link.url)  # self.visited_urls_base,
+            # self.visited_urls_base.add(base_url)
             
             
                 
@@ -119,6 +124,10 @@ class MySpider(scrapy.Spider):
                         # if self.length<10:
                         self.visited_urls.add(site_link.url)
                         yield scrapy.Request(site_link.url, callback=self.parse)
+                        
+                        yield {
+                            'to_visit': site_link.url
+                            }
             
             elif is_np_domain(site_link.url):
                 yield {
