@@ -42,8 +42,10 @@ class MySpider(scrapy.Spider):
         self.start_urls = [kwargs.get('start_url')] 
         domain_name_to_resume_from = kwargs.get('domain_name_to_resume_from')
         if domain_name_to_resume_from:
-            self.start_urls = get_resume_urls(domain_name_to_resume_from)
-        print(f'\n\n start_urls: {self.start_urls} \n\n')
+            resume_urls = get_resume_urls(domain_name_to_resume_from)
+            if resume_urls:
+                self.start_urls = resume_urls
+        print(f'\n\n start_urls: {self.start_urls} domain_name_to_resume_from : {domain_name_to_resume_from}\n\n')
         # using bloom filter to store visited urls for faster lookup
         self.visited_urls = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.LARGE_SET_GROWTH)    # pybloom_live.ScalableBloomFilter.SMALL_SET_GROWTH means
         # self.visited_urls_base = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.SMALL_SET_GROWTH)

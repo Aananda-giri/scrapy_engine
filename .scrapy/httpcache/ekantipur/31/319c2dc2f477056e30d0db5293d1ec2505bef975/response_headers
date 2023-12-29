@@ -1,0 +1,15 @@
+Date: Fri, 29 Dec 2023 07:18:22 GMT
+Content-Type: text/html; charset=UTF-8
+Link: <https://onlinetvnepal.com/wp-json/>; rel="https://api.w.org/"
+Link: <https://onlinetvnepal.com/wp-json/wp/v2/categories/14>; rel="alternate"; type="application/json"
+X-Litespeed-Cache-Control: public,max-age=604800
+X-Litespeed-Tag: 0a5_HTTP.200,0a5_category,0a5_URL.734931c75c5e455d5a635a0803a1bc8c,0a5_T.14,0a5_
+X-Litespeed-Cache: miss
+Vary: Accept-Encoding
+Alt-Svc: h3=":443"; ma=86400
+Cf-Cache-Status: DYNAMIC
+Report-To: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=RAQceUl3llszeXwBtrgCe1C281cEDz%2FvcVzOpH4UQ0OsZaKrW8PDZ7eG%2Bof1N1lsb3%2B%2BkXQVRn2D11bFBwe7If5%2BOhvSLMBmH8aFom3XOpnqUosgbjPCGhE72JPLOquvk79XGg%3D%3D"}],"group":"cf-nel","max_age":604800}
+Nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+Server: cloudflare
+Cf-Ray: 83d044c3face8e51-KTM
+Content-Encoding: gzip

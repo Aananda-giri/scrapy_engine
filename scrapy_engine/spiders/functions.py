@@ -8,7 +8,27 @@ from urllib.parse import urlparse
 
 
 
+def remove_file_if_empty(file_path):
+    """Checks if a file is empty and removes it if it is.
 
+    Args:
+        file_path (str): The path to the file to check.
+
+    Returns:
+        bool: True if the file was empty and removed, False otherwise.
+    """
+
+    if os.path.exists(file_path) and os.path.getsize(file_path) == 0:
+        try:
+            os.remove(file_path)
+            print(f"Removed empty file: {file_path}")
+            return True
+        except OSError as e:
+            print(f"Error removing file: {e}")
+            return False
+    else:
+        print(f"File is not empty or does not exist: {file_path}")
+        return False
 
 def get_resume_urls(domain_name_to_resume_from):
     '''
@@ -30,8 +50,10 @@ def get_resume_urls(domain_name_to_resume_from):
     
     new_file_name = domain_name_to_resume_from + '.json'
     
+    remove_file_if_empty(new_file_name)
+    
     urls_to_visit = set()
-    urls_visited = self.visited_urls = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.LARGE_SET_GROWTH)
+    urls_visited = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.LARGE_SET_GROWTH)
     news_start_ulrs = set()
     
     while os.path.exists(new_file_name):
@@ -58,13 +80,16 @@ def get_resume_urls(domain_name_to_resume_from):
                 urls_visited.add(each_data['visited'])  # each_data['visited'] is a url
         
         new_file_name = domain_name + f'_{index}.json'
+        # remove file if file is empty
+        remove_file_if_empty(mew_file_name)
+
         index += 1
     
     for to_visit in urls_to_visit:
         if to_visit not in urls_visited:
             news_start_ulrs.add(to_visit)
     
-    return news_start_ulrs
+    return list(news_start_ulrs)
 
 
 def is_nepali_language(text):
