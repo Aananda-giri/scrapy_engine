@@ -51,10 +51,10 @@ def get_resume_urls(domain_name_to_resume_from):
             with open(new_file_name, 'r') as file:
                 data = json.load(file)
         for each_data in data:
-            if 'to_visit' in each_data.keys():
+            if type(each_data) == dict and 'to_visit' in each_data.keys():
                 urls_to_visit.add(each_data['to_visit'])  # each_data['to_visit'] is a of urls
             
-            if 'visited' in data.keys():
+            if type(each_data) == dict and 'visited' in data.keys():
                 urls_visited.add(each_data['visited'])  # each_data['visited'] is a url
         
         new_file_name = domain_name + f'_{index}.json'
