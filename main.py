@@ -6,12 +6,18 @@ for url in newspaper_urls:
   remove url from newspaper_urls
 '''
 
+
+
 import subprocess
 from urllib.parse import urlparse
 import os
 import json
 import shutil
-
+if os.path.exists('keep_alive.py'):
+    from keep_alive import keep_alive
+    keep_alive()
+    
+print("running.....")
 def get_one_start_url():
     with open("news_start_urls.json",'r') as file:
         urls = json.load(file)
@@ -73,7 +79,7 @@ while new_start_url != []:
         # running locally
 
         # run scrapy
-        run_scrapy_with_new_start_url(new_start_url, file_name, domain_name)
+        run_scrapy_with_new_start_url(new_start_url, start_file_name, domain_name)
         
         # remove url crawled from start_urls
         remove_one_url(new_start_url)
