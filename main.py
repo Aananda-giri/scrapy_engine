@@ -13,7 +13,9 @@ from urllib.parse import urlparse
 import os
 import json
 import shutil
-if os.path.exists('keep_alive.py'):
+
+if 'REPL_SLUG' in os.environ:
+    print("Code is running in Replit!")
     from keep_alive import keep_alive
     keep_alive()
 
@@ -88,7 +90,7 @@ def run_scrapy_with_new_start_url(new_start_url, file_name, domain_name_to_resum
         spider_name = 'ekantipur'
         subprocess.run(['scrapy', 'crawl', spider_name, '-O', file_name, '-a', 'start_url=' + new_start_url, '-a', 'domain_name_to_resume_from=' + domain_name_to_resume_from])
 
-    # !scrapy crawl spider_name -O file_name -a start_url= new_start_url
+    # !scrapy crawl ekantipur  -O file_name.json -a start_url="https://www.ekantipur.com" -a domain_name_to_resume_from="ekantipur"
     # output to file to resume later
     # subprocess.run(['scrapy', 'crawl', spider_name, '-O', '/content/' + file_name, '-a', 'start_url=' + new_start_url])
 
@@ -99,6 +101,7 @@ while new_start_url != []:
     print(f'\n\n new_start_url:{new_start_url} \n\n')
     # new_start_url = 'https://onlinetvnepal.com/'
     start_file_name, domain_name = get_file_name(new_start_url)
+    print(f'\n\n file_name: {start_file_name} \n\n')
 
     if not 'google' in os.uname().release:
         # running locally

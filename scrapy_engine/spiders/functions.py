@@ -1,6 +1,6 @@
 import langid
 import re
-import os
+import os, json
 
 import pybloom_live
 from pathlib import Path
@@ -17,7 +17,6 @@ def remove_file_if_empty(file_path):
     Returns:
         bool: True if the file was empty and removed, False otherwise.
     """
-
     if os.path.exists(file_path) and os.path.getsize(file_path) == 0:
         try:
             os.remove(file_path)
@@ -55,8 +54,10 @@ def get_resume_urls(domain_name_to_resume_from):
     urls_to_visit = set()
     urls_visited = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.LARGE_SET_GROWTH)
     news_start_ulrs = set()
-    
+    index = 0
     while os.path.exists(new_file_name):
+        if remove_file_if_empty(new_file_name):
+            break
         try:
             with open(new_file_name, 'r') as file:
                 data = json.load(file)
@@ -67,7 +68,7 @@ def get_resume_urls(domain_name_to_resume_from):
                adding : `""]` at the end of file to make it valid json file
 
             '''
-            with open('log_file.json', 'a') as file:
+            with open(new_file_name, 'a') as file:
                 file.write("\"\"]")
             
             with open(new_file_name, 'r') as file:
@@ -76,15 +77,17 @@ def get_resume_urls(domain_name_to_resume_from):
             if type(each_data) == dict and 'to_visit' in each_data.keys():
                 urls_to_visit.add(each_data['to_visit'])  # each_data['to_visit'] is a of urls
             
-            if type(each_data) == dict and 'visited' in data.keys():
-                urls_visited.add(each_data['visited'])  # each_data['visited'] is a url
+            if type(each_data) == dict:
+                if 'visited' in each_data.keys():
+                    urls_visited.add(each_data['visited'])  # each_data['visited'] is a url
         
-        new_file_name = domain_name + f'_{index}.json'
+        new_file_name = domain_name_to_resume_from + f'_{index}.json'
         # remove file if file is empty
-        remove_file_if_empty(mew_file_name)
+        remove_file_if_empty(new_file_name)
 
         index += 1
     
+    print(f'\n\n new_file_name from function:{new_file_name}')
     for to_visit in urls_to_visit:
         if to_visit not in urls_visited:
             news_start_ulrs.add(to_visit)
