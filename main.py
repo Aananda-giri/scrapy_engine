@@ -7,7 +7,6 @@ for url in newspaper_urls:
 '''
 
 
-
 import subprocess
 from urllib.parse import urlparse
 import os

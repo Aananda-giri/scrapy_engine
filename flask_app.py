@@ -40,9 +40,8 @@ def save_data(file_name='nepali_dataset.csv'):
 
 
 def compress_file(input_file_path="nepali_dataset.csv",
-                  output_file_path="nepali_dataset.zip"):
+                  output_file_path="nepali_dataset.csv.gz"):
   # Step 3: Compress the CSV file
-  compressed_file_path = 'compressed_file.csv.gz'
   with open(input_file_path, 'rb') as csv_file:
     with gzip.open(output_file_path, 'wb') as compressed_file:
       compressed_file.writelines(csv_file)
@@ -52,10 +51,10 @@ def compress_file(input_file_path="nepali_dataset.csv",
 def data():
   save_data('nepali_dataset.csv')
   compress_file(input_file_path="nepali_dataset.csv",
-                output_file_path="nepali_dataset.csv")
+                output_file_path="nepali_dataset.csv.gz")
 
   # Use the send_file function to send the large file as a response
-  return send_file("nepali_dataset.zip",
+  return send_file("nepali_dataset.csv.gz",
                    as_attachment=True,
                    download_name='nepali_news_dataset.csv.gz',
                    mimetype='application/gzip')
@@ -68,3 +67,5 @@ def run():
 def keep_alive():
   server = Thread(target=run)
   server.start()
+
+
