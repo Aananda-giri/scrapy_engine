@@ -92,7 +92,7 @@ def get_resume_urls(domain_name_to_resume_from):
         if to_visit not in urls_visited:
             news_start_ulrs.add(to_visit)
     
-    return list(news_start_ulrs)
+    return list(news_start_ulrs), urls_visited
 
 
 def is_nepali_language(text):
