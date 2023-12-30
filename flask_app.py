@@ -49,6 +49,12 @@ def download_file():
 @app.route('/update_info', methods=['POST'])
 def update_info(file_name='nepali_news_dataset.csv'):
   print('Upadting info...')
+  # Remove old files
+  if os.path.exists('nepali_news_dataset.csv.gz'):
+    os.remove('nepali_news_dataset.csv.gz')
+  if os.path.exists('nepali_news_dataset.csv'):
+    os.remove('nepali_news_dataset.csv')
+  
   files = os.listdir()
   nepali_dataset = []
   for file in files:
