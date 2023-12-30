@@ -64,7 +64,7 @@ def get_resume_urls(domain_name_to_resume_from):
         except:
             '''
                file is corrupt when scrapy is terminated while it is still crawling.
-               while corrupt, file is terminated with: `{dome_data},`
+               while corrupt, file is terminated with: `{some_data},`
                adding : `""]` at the end of file to make it valid json file
 
             '''

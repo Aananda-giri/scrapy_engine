@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Information</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Nepali Dataset Information</h1>
+    <p>Compressed File Size: {{ file_size }} Mb</p>
+    <p>Creation Date: {{ creation_date }}</p>
+
+    <form action="/download" method="get">
+        <button type="submit">Download File</button>
+    </form>
+
+    <form id="updateForm" action="/update_data" method="post">
+        <button type="submit" onclick="hideButton()">Update Data</button>
+    </form>
+    
+    <center>
+        <button type="menu" style="display: none; margin-top: 20px;" id="updating_btn">Updating Data...</button>
+    </center>
+    <script>
+        function hideButton() {
+            // Hide the button when clicked
+            document.getElementById('updateForm').style.display = 'none';
+            document.getElementById('updating_btn').style.display = 'block';
+            // You can also submit the form if needed
+            // document.getElementById('updateForm').submit();
+        }
+    </script>
+
+</body>
+</html>
