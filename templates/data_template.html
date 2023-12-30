@@ -43,20 +43,28 @@
 </head>
 <body>
     <h1>Nepali Dataset Information</h1>
-    <p>Compressed File Size: {{ file_size }} Mb</p>
+    <p>original file size: {{ file_size_original }} Mb</p>
+    <p>Compressed File Size: {{ file_size_compressed }} Mb</p>
     <p>Creation Date: {{ creation_date }}</p>
-
+    <br><br><h2>Sites Crawled:</h2>
+    <ul>
+        {% for file in sites_crawled %}
+            <li>{{ file }}</li>
+        {% endfor %}
+    </ul>
     <form action="/download" method="get">
         <button type="submit">Download File</button>
     </form>
 
-    <form id="updateForm" action="/update_data" method="post">
-        <button type="submit" onclick="hideButton()">Update Data</button>
+    <form id="updateForm" action="/update_info" method="post">
+        <button type="submit" onclick="hideButton()">Update info</button>
     </form>
     
     <center>
-        <button type="menu" style="display: none; margin-top: 20px;" id="updating_btn">Updating Data...</button>
+        <button type="menu" style="display: none; margin-top: 20px;" id="updating_btn">Updating Info...</button>
+        <p>note: Do not update info. frequently..</p>
     </center>
+    
     <script>
         function hideButton() {
             // Hide the button when clicked

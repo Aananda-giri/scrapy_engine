@@ -14,7 +14,25 @@ app = Flask('')
 
 @app.route('/')
 def home():
-  return "Bot is running!"
+    # Get file size and date of creation
+    original_file_path = "nepali_news_dataset.csv"
+    compressed_file_path = "nepali_news_dataset.csv.gz"
+    compressed_file_size_mb = round(os.path.getsize(compressed_file_path) / (1024 * 1024),3)
+    original_file_size_mb = round(os.path.getsize(original_file_path) / (1024 * 1024),3)
+
+    sites_crawled = set([file.split('_')[0].split('.json')[0] for file in os.listdir() if (file.endswith('.json')) and (file not in ['test.json', 'news_start_urls copy.json', 'news_start_urls.json'])])
+    # sites_crawled = {'onlinekhabar.com', 'onlinekhabar2.com', 'onlinekhabar3.com'}
+    creation_date = datetime.utcfromtimestamp(os.path.getctime(compressed_file_path)).strftime('%Y-%m-%d %H:%M:%S')
+
+    # Render HTML template with file information and buttons
+    return render_template('data_template.html',
+                            file_size_compressed=compressed_file_size_mb,
+                            file_size_original=original_file_size_mb,
+                            creation_date=creation_date,
+                            sites_crawled=sites_crawled)
+    # save_data('nepali_dataset.csv')
+    # compress_file(input_file_path="nepali_dataset.csv",
+    #               output_file_path="nepali_dataset.csv.gz")
 
 @app.route('/download', methods=['GET'])
 def download_file():
@@ -25,12 +43,12 @@ def download_file():
                    download_name='nepali_news_dataset.csv.gz',
                    mimetype='application/gzip')
   # Redirect to the '/data' page
-  # return redirect(url_for('data'))
+  return redirect(url_for('home'))
 
 
-@app.route('/update_data', methods=['POST'])
-def update_data(file_name='nepali_news_dataset.csv'):
-  print('Upadting data...')
+@app.route('/update_info', methods=['POST'])
+def update_info(file_name='nepali_news_dataset.csv'):
+  print('Upadting info...')
   files = os.listdir()
   nepali_dataset = []
   for file in files:
@@ -56,9 +74,7 @@ def update_data(file_name='nepali_news_dataset.csv'):
   del nepali_dataset  # free up memory
   compress_file()     # compress the file
   # Redirect to the '/data' page
-  return redirect(url_for('data'))
-
-
+  return redirect(url_for('home'))
 
 def compress_file(input_file_path="nepali_news_dataset.csv",
                   output_file_path="nepali_news_dataset.csv.gz"):
@@ -67,23 +83,9 @@ def compress_file(input_file_path="nepali_news_dataset.csv",
     with gzip.open(output_file_path, 'wb') as compressed_file:
       compressed_file.writelines(csv_file)
 
-
-@app.route('/data')
+@app.route('/data', methods=['GET'])
 def data():
-  # Get file size and date of creation
-  file_path = "nepali_news_dataset.csv.gz"
-  file_size_mb = round(os.path.getsize(file_path) / (1024 * 1024),3)
-  creation_date = datetime.utcfromtimestamp(os.path.getctime(file_path)).strftime('%Y-%m-%d %H:%M:%S')
-
-  # Render HTML template with file information and buttons
-  return render_template('data_template.html',
-                          file_size=file_size_mb,
-                          creation_date=creation_date)
-  # save_data('nepali_dataset.csv')
-  # compress_file(input_file_path="nepali_dataset.csv",
-  #               output_file_path="nepali_dataset.csv.gz")
-
-
+  return redirect(url_for('home'))
 
 def run():
   app.run(host='0.0.0.0', port=8080)
