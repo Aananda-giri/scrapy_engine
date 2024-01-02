@@ -17,12 +17,13 @@ def home():
     # Get file size and date of creation
     original_file_path = "nepali_news_dataset.csv"
     compressed_file_path = "nepali_news_dataset.csv.gz"
-    compressed_file_size_mb = round(os.path.getsize(compressed_file_path) / (1024 * 1024),3)
-    original_file_size_mb = round(os.path.getsize(original_file_path) / (1024 * 1024),3)
+    
+    compressed_file_size_mb = round(os.path.getsize(compressed_file_path) / (1024 * 1024),3) if os.path.exists(compressed_file_path) else 0
+    original_file_size_mb = round(os.path.getsize(original_file_path) / (1024 * 1024),3) if os.path.exists(original_file_path) else 0
 
     sites_crawled = set([file.split('_')[0].split('.json')[0] for file in os.listdir() if (file.endswith('.json')) and (file not in ['test.json', 'news_start_urls copy.json', 'news_start_urls.json'])])
     # sites_crawled = {'onlinekhabar.com', 'onlinekhabar2.com', 'onlinekhabar3.com'}
-    creation_date = datetime.utcfromtimestamp(os.path.getctime(compressed_file_path)).strftime('%Y-%m-%d %H:%M:%S')
+    creation_date = datetime.utcfromtimestamp(os.path.getctime(compressed_file_path)).strftime('%Y-%m-%d %H:%M:%S') if os.path.exists(compressed_file_path) else None
 
     # Render HTML template with file information and buttons
     return render_template('data_template.html',
@@ -62,7 +63,6 @@ def update_info(file_name='nepali_news_dataset.csv'):
       try:
         with open(file, 'r') as f:
           data = json.load(f)
-
           for d in data:
             if type(d) == dict:
               if 'paragraph' in d.keys():
