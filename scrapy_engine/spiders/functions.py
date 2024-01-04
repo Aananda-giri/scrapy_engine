@@ -7,7 +7,6 @@ import pybloom_live
 from pathlib import Path
 from urllib.parse import urlparse
 
-
 def merge_same_named_json_files(delete_merged=False):
   '''
         * Crawled data is saved in .json files.
@@ -53,7 +52,6 @@ def merge_same_named_json_files(delete_merged=False):
         old_data = json.dump(data, f)
     if delete_merged:
       os.remove(file)
-
 
 def compress_file(input_file_path="nepali_news_dataset.csv",
                   output_file_path="nepali_news_dataset.csv.gz"):
