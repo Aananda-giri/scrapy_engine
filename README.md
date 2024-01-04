@@ -31,9 +31,11 @@ nepberta_urls = ["https://ekantipur.com/",  "https://onlinekhabar.com/",  "https
 * latest tweets in their twitter page are from 2019. https://twitter.com/dainikonline2?lang=en
 '''
 nepberta_error_urls  = ["https://dainikonline.com/"]    
-additional_urls = ["https://www.dainiknepal.com/"]
+new_urls = []
 
-crawling_completed = []
+crawling_completed = ['https://www.hamrakura.com/',  'https://www.bigulnews.com/', 'https://www.baahrakhari.com/',  'https://www.ekantipur.com/',  'https://sancharkendra.com/',  'https://www.realkhabar.net/',  'https://www.nagariknetwork.com/',  'https://www.abhiyandaily.com/',  'https://www.eadarsha.com/',  'https://samacharpati.com/',  'https://www.hamrokhotang.com/',  'https://www.aarthiknews.com_merged_/',  'https://www.kantipath.com/',  'https://www.onlinetvnepal.com/',  'https://www.eadarsha.com_merged_/',  'https://www.arghakhanchi.com/',  'https://www.nayapage.com/',  'https://www.radiosagarmatha.org.np/',  'https://www.onsnews.com/',  'https://www.onlinekhabar.com_merged_/',  'https://www.saptahik.com.np/',  'https://www.sancharkendra.com_merged_/',  'https://www.samacharpati.com_merged_/',  'https://www.nepalihimal.com/',  'https://aarthiknews.com/']
+
+
 have_crawled_incomplete = ["https://hamrakura.com/", "https://onlinekhabar.com/"]
 
 
