@@ -1,6 +1,7 @@
 # Keep alive for replit
 
 from flask import Flask, send_file, render_template, redirect, url_for
+from scrapy_engine.spiders.functions import compress_file, merge_crawled_json_files, save_nepali_paragraphs_to_csv
 from threading import Thread
 import os, json
 from flask import jsonify
@@ -49,6 +50,13 @@ def download_file():
 
 @app.route('/update_info', methods=['POST'])
 def update_info(file_name='nepali_news_dataset.csv'):
+  '''
+  get all crawled .json files
+  combine their paragraphs
+  save nepali paragraphs to csv file
+  compress the csv file
+  return compressed csv file
+  '''
   print('Upadting info...')
   # Remove old files
   if os.path.exists('nepali_news_dataset.csv.gz'):
@@ -78,16 +86,13 @@ def update_info(file_name='nepali_news_dataset.csv'):
       except:
         pass
   del nepali_dataset  # free up memory
-  compress_file()     # compress the file
+  # Step 3: Compress the CSV file
+  compress_file(input_file_path="nepali_news_dataset.csv",
+                  output_file_path="nepali_news_dataset.csv.gz")     # compress the file
   # Redirect to the '/data' page
   return redirect(url_for('home'))
 
-def compress_file(input_file_path="nepali_news_dataset.csv",
-                  output_file_path="nepali_news_dataset.csv.gz"):
-  # Step 3: Compress the CSV file
-  with open(input_file_path, 'rb') as csv_file:
-    with gzip.open(output_file_path, 'wb') as compressed_file:
-      compressed_file.writelines(csv_file)
+
 
 @app.route('/data', methods=['GET'])
 def data():

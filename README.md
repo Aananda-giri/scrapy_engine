@@ -20,3 +20,34 @@ with open('nepali_dataset.csv', 'r') as csvfile:
       # Do something with the data in each row
       rows.append(row)q
 ```
+
+# Urls to crawl from
+```
+nepberta_urls = ["https://ekantipur.com/",  "https://onlinekhabar.com/",  "https://nagariknews.com/",  "https://thahakhabar.com/",  "https://ratopati.com/",  "https://reportersnepal.com/",  "https://setopati.com/",  "https://hamrakura.com/",  "https://lokpath.com/",  "https://abhiyandaily.com/",  "https://pahilopost.com/",  "https://lokaantar.com/",  "https://dcnepal.com/",  "https://nayapage.com/",  "https://nayapatrikadaily.com/",  "https://everestdainik.com/",  "https://imagekhabar.com/",  "https://shilapatra.com/",  "https://khabarhub.com/",  "https://baahrakhari.com/",  "https://ujyaaloonline.com/",  "https://nepalkhabar.com/",  "https://emountaintv.com/",  "https://kathmandupress.com/",  "https://farakdhar.com/",  "https://kendrabindu.com/",  "https://dhangadhikhabar.com/",  "https://gorkhapatraonline.com/",  "https://nepalpress.com/",  "https://hamrokhelkud.com/",  "https://himalkhabar.com/",  "https://nepallive.com/",  "https://nepalsamaya.com/",  "https://kalakarmi.com/",  "https://dainiknewsnepal.com/"]
+
+
+'''
+* 'dainikonline' seems to have been closed or moved somewhere else.
+* latest tweets in their twitter page are from 2019. https://twitter.com/dainikonline2?lang=en
+'''
+nepberta_error_urls  = ["https://dainikonline.com/"]    
+additional_urls = ["https://www.dainiknepal.com/"]
+
+crawling_completed = []
+have_crawled_incomplete = ["https://hamrakura.com/", "https://onlinekhabar.com/"]
+
+
+need_special_attention = ["https://www.bbc.com/nepali", "https://beta.gorkhapatraonline.com/epapermaincategory", "https://epaper.gorkhapatraonline.com/"]
+'''
+bbc_nepali: avoid following links that does not start with: bbc.com/nepali
+gorkhapatra: it would be nice to crawl pdfs of gorkhapatra
+            problem is: I coudn't find their encoding scheme
+'''
+
+
+```
+
+
+# Post-Process
+* `python3 post_process.py`
+* to extract nepali paragraphs in csv format from crawled `.json` data.
