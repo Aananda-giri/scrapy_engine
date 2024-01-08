@@ -8,7 +8,7 @@
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = "scrapy_engine"
-
+q
 SPIDER_MODULES = ["scrapy_engine.spiders"]
 NEWSPIDER_MODULE = "scrapy_engine.spiders"
 
@@ -20,7 +20,7 @@ NEWSPIDER_MODULE = "scrapy_engine.spiders"
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS =  10 # 32
+CONCURRENT_REQUESTS =  15 # 10 for replit # 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay

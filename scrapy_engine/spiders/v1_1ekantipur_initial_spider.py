@@ -26,7 +26,7 @@ class MySpider(scrapy.Spider):
     crawl all sub-domains of domain given in start_urls
     crawl first 1000 '.np' domains and their sub-domains
     '''
-    name = 'ekantipur'
+    name = 'ekantipur_v1'
     # List of starting URLs
     # reference: https://www.w3newspapers.com/nepal/, https://onlinenewspapers.com/nepal.shtml
     
