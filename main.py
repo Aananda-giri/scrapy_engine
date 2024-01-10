@@ -87,7 +87,11 @@ def run_scrapy_with_new_start_url(new_start_url, file_name, domain_name_to_resum
     else:
         # resuming
         spider_name = 'ekantipur'
-        subprocess.run(['scrapy', 'crawl', spider_name, '-O', file_name, '-a', 'start_url=' + new_start_url, '-a', 'domain_name_to_resume_from=' + domain_name_to_resume_from])
+        
+        command = ['scrapy', 'crawl', spider_name, '-O', file_name, '-a', 'start_url=' + new_start_url, '-a', 'domain_name_to_resume_from=' + domain_name_to_resume_from]
+        print(f'\n\n -------------- \n command:{command}\n ------------------------------')
+        subprocess.run(command)
+    # scrapy crawl ekantipur -O ujyaaloonline.com.json -a start_url="https://ujyaaloonline.com/"
     # scrapy crawl ekantipur -O nepalipost.com.json -a start_url="https://www.ekantipur.com" -a domain_name_to_resume_from="nepalipost.com"
     # !scrapy crawl ekantipur  -O file_name.json -a start_url="https://www.ekantipur.com" -a domain_name_to_resume_from="ekantipur"
     # output to file to resume later
