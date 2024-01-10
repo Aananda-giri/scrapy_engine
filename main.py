@@ -115,7 +115,8 @@ while new_start_url != []:
             
             # remove url crawled from start_urls
             remove_one_url(new_start_url)
-        except:
+        except Exception as Ex:
+            print(f"\n-------------------\n Exceptino1: {Ex}")
             # get new start url
             new_start_url = get_one_start_url()
         
