@@ -55,11 +55,15 @@ gorkhapatra: it would be nice to crawl pdfs of gorkhapatra
 
 ```
 
-
 # Post-Process
 * `python3 post_process.py`
 * to extract nepali paragraphs in csv format from crawled `.json` data.
 
+
+# How to know if crawling is completed for urls?
+* command: `pytho3 complete_crawling.py`
+* get resume_urls from crawled data if any
+* and resume crawling
 
 # Data:
 * [data-crawled-so-far](https://drive.google.com/file/d/1d7qEqBd2YO98CcfcdTcFq-kDcHgm0eg0/edit)
