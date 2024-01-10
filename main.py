@@ -13,10 +13,10 @@ import os
 import json
 import shutil
 
-if 'REPL_SLUG' in os.environ:
-    print("Code is running in Replit!")
-    from flask_app import keep_alive
-    keep_alive()
+# if 'REPL_SLUG' in os.environ:
+#     print("Code is running in Replit!")
+#     from flask_app import keep_alive
+#     keep_alive()
 
 print("running.....")
 def get_one_start_url():
@@ -116,7 +116,7 @@ while new_start_url != []:
             # remove url crawled from start_urls
             remove_one_url(new_start_url)
         except Exception as Ex:
-            print(f"\n-------------------\n Exceptino1: {Ex} \n ------------------------ \n")
+            print(f"\n-------------------\n Exceptino1: start_url:{new_start_url} {Ex} \n ------------------------ \n")
             # get new start url
             new_start_url = get_one_start_url()
         
