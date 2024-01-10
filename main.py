@@ -110,13 +110,15 @@ while new_start_url != []:
         # running locally
 
         try:
+            print(f'\n-------------------\nrunniing...\n-------------------\n')
             # run scrapy
             run_scrapy_with_new_start_url(new_start_url, start_file_name, domain_name)
             
             # remove url crawled from start_urls
             remove_one_url(new_start_url)
+            print(f'\n-------------------\n removed url \n-------------------\n ')
         except Exception as Ex:
-            print(f"\n-------------------\n Exceptino1: start_url:{new_start_url} {Ex} \n ------------------------ \n")
+            print(f"\n-------------------\n Exceptino1: start_url:{new_start_url}\n  {Ex} \n ------------------------ \n")
             # get new start url
             new_start_url = get_one_start_url()
         
