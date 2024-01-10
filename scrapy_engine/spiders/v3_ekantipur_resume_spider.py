@@ -50,7 +50,7 @@ class MySpider(scrapy.Spider):
                 self.visited_urls = visited_urls
                 print(f'\n\n Loaded:{len(self.start_urls)} urls.\n\n')
             
-        print(f'\n\n start_urls: {self.start_urls if len(self.start_urls)<=1 else len(self.start_urls)} domain_name_to_resume_from : {domain_name_to_resume_from}\n\n')
+        print(f'\n-----------------------------\n start_urls: {self.start_urls if len(self.start_urls)<=1 else len(self.start_urls)} domain_name_to_resume_from : {domain_name_to_resume_from}\n-----------------------------\n')
         
         # self.visited_urls_base = pybloom_live.ScalableBloomFilter(mode=pybloom_live.ScalableBloomFilter.SMALL_SET_GROWTH)
         # self.length = 0

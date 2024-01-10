@@ -1,3 +1,9 @@
+newly assigned digital ocean:
+["https://www.newsofnepal.com/",  "https://ujyaaloonline.com/"
+
+previously assigned:
+["http://nepalipost.com/beta/", "https://www.nepalipaisa.com/", "https://topnepalnews.com/", "https://www.dainiknepal.com/", "httpsf://nepalkhabar.com/"]
+
 # Simple Scrapy scripts to crawl news
 
 # To run the script
