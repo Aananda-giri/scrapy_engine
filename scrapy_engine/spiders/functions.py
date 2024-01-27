@@ -76,7 +76,7 @@ def merge_same_named_json_files(delete_merged=False):
 
             '''
       with open(file, 'a') as f:
-        f.write(",\"\"]")
+        f.write(",{}]")
       print(f'\n\n file: {file}\n')
       with open(file, 'r') as f:
         data = json.load(f)
@@ -134,7 +134,7 @@ def save_nepali_paragraphs_to_csv(csv_file_name = "crawled_nepali_news_dataset.c
 
       '''
       with open(file, 'a') as f:
-        f.write(",\"\"]")
+        f.write(",{}]")
       with open(file, 'r') as f:
         data = json.load(f)
     nepali_paragraphs = []
@@ -210,7 +210,7 @@ def remove_file_if_empty(file_path):
       except Exception as Ex:
         print(f'----------------------------------- Exception: {Ex} -----------------------------------\n  file_path: {file_path}\n ')
         with open(file_path, 'a') as f:
-          f.write(",\"\"]")
+          f.write(",{}]")
         with open(file_path, 'r') as f:
           data = json.load(f)
       if not data:
