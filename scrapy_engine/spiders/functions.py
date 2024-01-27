@@ -55,6 +55,9 @@ def merge_same_named_json_files(delete_merged=False):
   merged_data = []
   merged_file_name = '_merged_.json'
   for file in data_files:
+    # merge only if it is less than 10 Mb
+    if os.path.getsize(file) > 10000000:
+      continue
     # merged_file_name = file.split('_')[0].split(
     #     '.json')[0] + '_merged_.json'
     # remove_file_if_empty(merged_file_name)
@@ -73,16 +76,26 @@ def merge_same_named_json_files(delete_merged=False):
 
             '''
       with open(file, 'a') as f:
-        f.write("\"\"]")
+        f.write(",\"\"]")
       print(f'\n\n file: {file}\n')
       with open(file, 'r') as f:
         data = json.load(f)
     # load if file exists
     if os.path.exists(merged_file_name):
-      with open(merged_file_name, 'r') as f:
-        old_data = json.load(f)
-      old_data.extend(old_data)
-    if data:
+      try:
+        with open(merged_file_name, 'r') as f:
+          old_data = json.load(f)
+        if not old_data:
+          old_data = []
+        old_data.extend(data)
+      except:
+        print(f'\n\n-------------- Not merged_file_name: {merged_file_name}\n')
+        continue
+    else:
+      old_data = data
+      if not old_data:
+        old_data = []
+    if old_data:
       with open(merged_file_name, 'w') as f:
         json.dump(old_data, f)
     if delete_merged:
@@ -121,7 +134,7 @@ def save_nepali_paragraphs_to_csv(csv_file_name = "crawled_nepali_news_dataset.c
 
       '''
       with open(file, 'a') as f:
-        f.write("\"\"]")
+        f.write(",\"\"]")
       with open(file, 'r') as f:
         data = json.load(f)
     nepali_paragraphs = []
@@ -177,14 +190,38 @@ def remove_file_if_empty(file_path):
     Returns:
         bool: True if the file was empty and removed, False otherwise.
     """
-  if os.path.exists(file_path) and os.path.getsize(file_path) == 0:
-    try:
-      os.remove(file_path)
-      print(f"Removed empty file: {file_path}")
-      return True
-    except OSError as e:
-      print(f"Error removing file: {e}")
-      return False
+  if os.path.exists(file_path):
+    if os.path.getsize(file_path) == 0:
+      # File size is 0 bytes
+      try:
+        os.remove(file_path)
+        print(f"Removed empty file: {file_path}")
+        return True
+      except OSError as e:
+        print(f"Error removing file: {e}")
+        return False
+    else:
+      try:
+        if os.path.getsize(file_path) > 10000000:
+            # Open only files less than 10 Mb
+            return False
+        with open(file_path, 'r') as f:
+          data = json.load(f)
+      except Exception as Ex:
+        print(f'----------------------------------- Exception: {Ex} -----------------------------------\n  file_path: {file_path}\n ')
+        with open(file_path, 'a') as f:
+          f.write(",\"\"]")
+        with open(file_path, 'r') as f:
+          data = json.load(f)
+      if not data:
+        # File is empty
+        try:
+          os.remove(file_path)
+          print(f"Removed empty file: {file_path}")
+          return True
+        except OSError as e:
+          print(f"Error removing file: {e}")
+          return False
   else:
     print(f"File is not empty or does not exist: {file_path}")
     return False
