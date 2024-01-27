@@ -1,4 +1,5 @@
 from scrapy_engine.spiders.functions import compress_file, merge_crawled_json_files, save_nepali_paragraphs_to_csv
+from scrapy_engine.spiders.functions import merge_same_named_json_files
 
 if __name__=="__main__":
     # Merge json files with same name
