@@ -61,7 +61,7 @@ gorkhapatra: it would be nice to crawl pdfs of gorkhapatra
 
 
 # How to know if crawling is completed for urls?
-* command: `pytho3 complete_crawling.py`
+* command: `pytho3 resume_incomplete_crawling.py`
 * get resume_urls from crawled data if any
 * and resume crawling
 

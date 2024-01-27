@@ -7,6 +7,40 @@ import pybloom_live
 from pathlib import Path
 from urllib.parse import urlparse
 
+def merge_crawled_json_files():
+  '''
+        * Crawled data is saved in .json files.
+        * There are multiple .json files.
+        * this functionoi Combines them.
+    '''
+  data_files = set([
+      file.split('_')[0].split('.json')[0] for file in os.listdir()
+      if (file.endswith('.json')) and (
+          file not in
+          ['test.json', 'news_start_urls copy.json', 'news_start_urls.json'])
+  ])
+  merged_data = []
+  for file in data_files:
+    if remove_file_if_empty(file):
+      # Removed empty file
+      continue
+    try:
+      with open(file, 'r') as f:
+        data = json.load(f)
+    except:
+      '''
+               file is corrupt when scrapy is terminated while it is still crawling.
+               while corrupt, file is terminated with: `{some_data},`
+               adding : `""]` at the end of file to make it valid json file
+
+            '''
+      with open(new_file_name, 'a') as file:
+        file.write("\"\"]")
+
+      with open(new_file_name, 'r') as file:
+        data = json.load(file)
+    merged_data.extends(data)
+
 def merge_same_named_json_files(delete_merged=False):
   '''
         * Crawled data is saved in .json files.
@@ -16,13 +50,14 @@ def merge_same_named_json_files(delete_merged=False):
   data_files = [
       file for file in os.listdir() if (file.endswith('.json')) and (
           file not in
-          ['test.json', 'news_start_urls copy.json', 'news_start_urls.json'])
+          ['test.json', 'news_start_urls copy.json', 'news_start_urls.json']) and not file.endswith('_merged_.json')
   ]
   merged_data = []
+  merged_file_name = '_merged_.json'
   for file in data_files:
-    merged_file_name = file.split('_')[0].split(
-        '.json')[0] + '_merged_' + '.json'
-    remove_file_if_empty(merged_file_name)
+    # merged_file_name = file.split('_')[0].split(
+    #     '.json')[0] + '_merged_.json'
+    # remove_file_if_empty(merged_file_name)
     print(f'\n\n merged_file_name: {merged_file_name}\n')
     if remove_file_if_empty(file):
       # Removed empty file
@@ -46,10 +81,10 @@ def merge_same_named_json_files(delete_merged=False):
     if os.path.exists(merged_file_name):
       with open(merged_file_name, 'r') as f:
         old_data = json.load(f)
-      data.extend(old_data)
+      old_data.extend(old_data)
     if data:
       with open(merged_file_name, 'w') as f:
-        old_data = json.dump(data, f)
+        json.dump(old_data, f)
     if delete_merged:
       os.remove(file)
 
@@ -133,42 +168,6 @@ def save_nepali_paragraphs_to_csv(csv_file_name = "crawled_nepali_news_dataset.c
     # Write the cleaned DataFrame back to the CSV file
     df.to_csv(csv_file_name, index=False)
 
-
-def merge_crawled_json_files():
-  '''
-        * Crawled data is saved in .json files.
-        * There are multiple .json files.
-        * this functionoi Combines them.
-    '''
-  data_files = set([
-      file.split('_')[0].split('.json')[0] for file in os.listdir()
-      if (file.endswith('.json')) and (
-          file not in
-          ['test.json', 'news_start_urls copy.json', 'news_start_urls.json'])
-  ])
-  merged_data = []
-  for file in data_files:
-    if remove_file_if_empty(file):
-      # Removed empty file
-      continue
-    try:
-      with open(file, 'r') as f:
-        data = json.load(f)
-    except:
-      '''
-               file is corrupt when scrapy is terminated while it is still crawling.
-               while corrupt, file is terminated with: `{some_data},`
-               adding : `""]` at the end of file to make it valid json file
-
-            '''
-      with open(new_file_name, 'a') as file:
-        file.write("\"\"]")
-
-      with open(new_file_name, 'r') as file:
-        data = json.load(file)
-    merged_data.extends(data)
-
-
 def remove_file_if_empty(file_path):
   """Checks if a file is empty and removes it if it is.
 
@@ -219,7 +218,7 @@ def get_resume_urls(domain_name_to_resume_from):
   index = 0
   
   # load data from  merged file
-  if os.path.exists(domain_name_to_resume_from + '_merged_.json'):
+  if os.path.exists(domain_name_to_resume_from + '_merged_.json'): 
     if not remove_file_if_empty(new_file_name):
         # File not empty
         with open(domain_name_to_resume_from + '_merged_.json','r') as f:
