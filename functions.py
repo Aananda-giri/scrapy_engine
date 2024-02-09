@@ -1,4 +1,5 @@
 import os, json
+from urllib.parse import urlparse
 def get_file_name(url, domain_name = None):
     if not domain_name:
         # Get domain name from url
