@@ -1,4 +1,4 @@
-import os
+import os, json
 def get_file_name(url, domain_name = None):
     if not domain_name:
         # Get domain name from url

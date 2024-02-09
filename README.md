@@ -61,7 +61,7 @@ gorkhapatra: it would be nice to crawl pdfs of gorkhapatra
 
 ```
 from scrapy_engine.spiders.functions import merge_same_named_json_files
-merge_same_named_json_files(True)
+merge_same_named_json_files(delete_merged=True)
 ```
 
 
