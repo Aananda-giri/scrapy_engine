@@ -8,7 +8,7 @@
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = "scrapy_engine"
-q
+
 SPIDER_MODULES = ["scrapy_engine.spiders"]
 NEWSPIDER_MODULE = "scrapy_engine.spiders"
 
