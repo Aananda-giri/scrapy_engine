@@ -1,3 +1,7 @@
+## Test run the scrapy
+`scrapy crawl quotes -O quotes.json`
+`scrapy crawl ekantipur_v4 -O hamrakura.json -a start_url="https://www.hamrakura.com/"`
+
 newly assigned digital ocean:
 ["https://www.newsofnepal.com/",  "https://ujyaaloonline.com/"
 
@@ -45,7 +49,7 @@ crawling_completed = ['https://www.hamrakura.com/',  'https://www.bigulnews.com/
 have_crawled_incomplete = ["https://hamrakura.com/", "https://onlinekhabar.com/"]
 
 
-need_special_attention = ["https://www.bbc.com/nepali", "https://beta.gorkhapatraonline.com/epapermaincategory", "https://epaper.gorkhapatraonline.com/"]
+need_special_attention = ["https://www.bbc.com/nepali", "https://beta.gorkhapatraonline.com/epapermaincategory", "https://epaper.gorkhapatraonline.com/", "https://ujyaaloonline.com/" -> 403 response by cloudfare]
 '''
 bbc_nepali: avoid following links that does not start with: bbc.com/nepali
 gorkhapatra: it would be nice to crawl pdfs of gorkhapatra
