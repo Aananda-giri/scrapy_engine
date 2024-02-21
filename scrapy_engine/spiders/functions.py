@@ -378,7 +378,7 @@ def is_np_domain(url):
 
   # crawl it if .np domain and len(visited_urls_base) < 1000
 
-  return base_url[-3:] == '.np'
+  return base_url.endswith('.np') or base_url.endswith('.np/')
 
 
 def should_we_crawl_it(new_url, visited_urls_base=None):

@@ -99,3 +99,19 @@ FEED_EXPORT_ENCODING = "utf-8"
 LOG_LEVEL='ERROR'   # only show errors
 #LOG_LEVEL='CRITICAL' # only show critical errors
 #LOG_LEVEL='NOTSET'  # show everything
+
+
+
+
+
+# ## ---------------------------------------------------
+# ## ---------------- REDIS-SPECIFIC SETTINGS -----------
+# ## ---------------------------------------------------
+# # Enables scheduling storing requests queue in redis.
+# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+
+# # Ensure all spiders share same duplicates filter through redis.
+# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+
+# # Redis Connection URL
+# REDIS_URL = 'redis://default:saQznB445IS0AEypcHVpzLKtGTxXilui@redis-13950.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:13950'
