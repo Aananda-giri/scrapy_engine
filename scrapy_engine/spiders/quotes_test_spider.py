@@ -83,30 +83,39 @@ class QuotesSpider(scrapy.Spider):
             }
         next_page = response.css("li.next a::attr(href)").get()
 
-        # REmove the crawled URL from to_visit
-        # self.redis_client.srem('to_visit_quotes_set', json.dumps(response.url))
+        
         self.publisher()
         if next_page is not None:
             self.redis_client.sadd('to_visit_quotes_set', json.dumps(response.urljoin(next_page)))
             # self.to_visit.append(response.urljoin(next_page))
             # Save next_page to Redis and remove the crawled URL from Redis
             # yield response.follow(next_page, self.parse)
-         # Fetch the next batch of URLs if available
+         
         
         
+        
+        # else:
+        #     # wait until the next batch of URLs are available
+        #     time.sleep(2)
+
+        #     next_urls = self.fetch_start_urls()
+        # # Remove visited url from to_visit set -> Now removed only  by back-end
+        if 'redirect_urls' in response.request.meta:
+            current_url = response.request.meta['redirect_urls'][0]
+        else:
+            current_url = response.request.url
+        self.visited_urls.add(response.url)
+        # self.redis_client.srem('to_visit_quotes_set', json.dumps(current_url))
+        # Fetch the next batch of URLs if available
         next_urls = self.fetch_start_urls()
         if next_urls:
-            if next_urls:
-                for url in next_urls:
-                    if url not in self.visited_urls:
-                        self.visited_urls.add(url)
-                        print(url)
-                        yield scrapy.Request(url, callback=self.parse)
-        else:
-            # wait until the next batch of URLs are available
-            time.sleep(2)
-
-            next_urls = self.fetch_start_urls()
+            for url in next_urls:
+                if url not in self.visited_urls:
+                    print(f'\n\n update visited: {url}\n')
+                    self.visited_urls.add(url)
+                    # print(url)
+                    yield scrapy.Request(url, callback=self.parse)
+        
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
         spider = super(QuotesSpider, cls).from_crawler(crawler, *args, **kwargs)
@@ -127,3 +136,15 @@ class QuotesSpider(scrapy.Spider):
 
         self.logger.info('Custom threads joined. Spider closing gracefully.')
 
+        # Re-start the spider
+        # process = CrawlerProcess(get_project_settings())
+        # process.crawl(QuotesSpider)
+        # process.start()
+
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
+
+if __name__ == '__main__':
+    process = CrawlerProcess(get_project_settings())
+    process.crawl(QuotesSpider)
+    process.start()
