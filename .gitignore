@@ -5,3 +5,4 @@ scrapy_v2/.env
 scrapy_engine/spiders/.env
 scrapy_engine/spiders/worker_spider_v2_passworded.py
 scrapy_engine/spiders/mongo_passworded.py
+ignore/*
