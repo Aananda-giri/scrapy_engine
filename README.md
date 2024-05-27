@@ -1,7 +1,8 @@
 # Scrapy hub
 * Code to deploy scrapy_engine to [scrapy hub](https://www.zyte.com/).
 
-
+## To run locally
+`scrapy crawl worker_spider_v2 -o worker_spider_v2.json`
 ##  Set values for
 * `scrapy_engine/spiders/worker_spider_v2.py`
 ```

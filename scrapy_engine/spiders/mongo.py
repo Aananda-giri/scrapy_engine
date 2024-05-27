@@ -2,15 +2,15 @@ import os
 import time
 from pymongo.server_api import ServerApi
 
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv(".env")
 
 # Creating mangodb
 from pymongo import MongoClient
 
 class Mongo():
     def __init__(self, db_name='scrapy-engine', collection_name="urls-collection"):
-        uri = f"mongodb+srv://{os.environ.get('mongo_username')}:{os.environ.get('mongo_password')}@scrapy-engine.cnaygdb.mongodb.net/?retryWrites=true&w=majority&appName=scrapy-engine"
+        uri = f"mongodb+srv://jokeleopedia:n85bSqxDn20sEZZ6@scrapy-engine.cnaygdb.mongodb.net/?retryWrites=true&w=majority&appName=scrapy-engine"
         # uri = f"mongodb+srv://{os.environ.get('user_heroku')}:{os.environ.get('pass_heroku')}@cluster0.dgeujbs.mongodb.net/?retryWrites=true&w=majority"
         
         # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
@@ -18,9 +18,9 @@ class Mongo():
         
         # Create the database for our example (we will use the same database throughout the tutorial
         self.db = client[db_name]
+
         self.collection = self.db[collection_name]  # using single collection for all urls
         
-
     def append_url_crawled(self, url):
         try:
             # Try inserting url

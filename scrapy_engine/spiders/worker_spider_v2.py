@@ -1,5 +1,5 @@
-
-from .functions import is_social_media_link, is_document_link, is_google_drive_link, is_same_domain, is_np_domain,is_special_domain_to_crawl, load_env_var_in_google_colab, remove_fragments_from_url, is_nepali_language, is_valid_text_naive
+# scrapy crawl worker_spider_v2 -o worker_spider_v2.json
+from .functions import is_social_media_link, is_document_link, is_google_drive_link, is_same_domain, is_np_domain,is_special_domain_to_crawl, remove_fragments_from_url, is_nepali_language, is_valid_text_naive
 import scrapy
 # import pybloom_live
 import scrapy
@@ -12,7 +12,7 @@ import time
 
 from scrapy import signals# , Spider
 from scrapy.linkextractors import LinkExtractor
-from server.mongo import Mongo
+from .mongo import Mongo
 
 from scrapy.spidermiddlewares.httperror import HttpError
 from twisted.internet.error import DNSLookupError, TCPTimedOutError, TimeoutError
@@ -26,17 +26,34 @@ class MasterSlave(scrapy.Spider):
     
             
     def __init__(self, *args, **kwargs):
-        # load environment variables if running in google colab
-        load_env_var_in_google_colab()
-        dotenv.load_dotenv("server/.env")
+        # use scrapy log to log "test string"
+        # try:
+        #     import dotenv
+        #     dotenv.load_dotenv()
+        # except Exception as e:
+        #     self.logger.error(f"Error loading .env file: {e}")
+        # try:
+        #     self.logger.error(f"{os.environ['mongo_username']}")
+        # except Exception as e:
+        #     self.logger.error(f"Error loading .env file: {e}")
+        self.logger.info("test string")
+        # self.logger.critical(f"list(os.walk('.')): {list(os.walk('../'))}")
 
+        # load environment variables if running in google colab
+        # load_env_var_in_google_colab()
+        # dotenv.load_dotenv()
+
+        # use scrapy log to log "test string"
+        # self.logger.info("test string")
+        self.logger.critical(f"os.listdir: {os.listdir()}")
+        
         # super(EkantipurSpider, self).__init__(*args, **kwargs)
         self.mongo = Mongo()
         
         self.redis_client = redis.Redis(
-            host=os.environ.get('REDIS_HOST', 'localhost'),
-            port = int(os.environ.get('REDIS_PORT', 6379)),
-            password=os.environ.get('REDIS_PASSWORD', None),
+            host='redis-18267.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com',
+            port = 18267,
+            password="dnMnzGGKHqKChdx4Dqdf7dMYYAfyQdPL",
         )
         
         # self.start_urls = self.fetch_start_urls()
@@ -51,8 +68,7 @@ class MasterSlave(scrapy.Spider):
     # def fetch_start_urls(self, number_of_new_urls_required=10):
     #     return [json.loads(url) for url in self.redis_client.srandmember('urls_to_crawl_cleaned_set', number_of_new_urls_required)]
     def start_requests(self):
-        n_concurrent_requests = self.crawler.engine.settings.get('CONCURRENT_REQUESTS')
-        start_urls = [remove_fragments_from_url(data_item['url']) for data_item in self.mongo.fetch_start_urls(n_concurrent_requests)]
+        start_urls = [remove_fragments_from_url(data_item['url']) for data_item in self.mongo.fetch_start_urls()]
         print(f'\n\n start:{start_urls} \n\n')
         for url in start_urls:
             yield scrapy.Request(url, callback=self.parse, errback=self.errback_httpbin)  # , dont_filter=True  : allows visiting same url again
