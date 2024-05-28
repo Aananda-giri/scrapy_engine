@@ -10,7 +10,7 @@ from pymongo import MongoClient
 
 class Mongo():
     def __init__(self, db_name='scrapy-engine', collection_name="urls-collection"):
-        uri = f"mongodb+srv://jokeleopedia:n85bSqxDn20sEZZ6@scrapy-engine.cnaygdb.mongodb.net/?retryWrites=true&w=majority&appName=scrapy-engine"
+        uri = "mongodb+srv://jokeleopedia:GXpVzoUJYWoXRlKN@scrapy-engine.xwugtdk.mongodb.net/?retryWrites=true&w=majority&appName=scrapy-engine"
         # uri = f"mongodb+srv://{os.environ.get('user_heroku')}:{os.environ.get('pass_heroku')}@cluster0.dgeujbs.mongodb.net/?retryWrites=true&w=majority"
         
         # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
@@ -21,6 +21,16 @@ class Mongo():
 
         self.collection = self.db[collection_name]  # using single collection for all urls
         
+    def check_connection(self):        
+        uri = f"mongodb+srv://{os.environ.get('mongo_username')}:{os.environ.get('mongo_password')}@scrapy-engine.xwugtdk.mongodb.net/?retryWrites=true&w=majority&appName=scrapy-engine"
+        # Create a new client and connect to the server
+        client = MongoClient(uri, server_api=ServerApi('1'))
+        # ping to confirm a successful connection
+        try:
+            client.admin.command('ping')
+            print("Pinged your deployment. You successfully connected to MongoDB!")
+        except Exception as e:
+            print(e)
     def append_url_crawled(self, url):
         try:
             # Try inserting url
@@ -28,7 +38,12 @@ class Mongo():
         except  Exception as ex:
             # url exists: change status to 'crawled'
             self.collection.update_one({'url':url}, {'$set': {'status':'crawled'}})
-        
+    def delete_to_crawl(self, url):
+        try:
+            self.collection.delete_one({'url':url, 'status':'to_crawl'})
+        except Exception as ex:
+            pass
+            print(ex)
     def append_url_crawling(self, url):
         try:
             # Try inserting url
@@ -98,7 +113,13 @@ class Mongo():
 
         # get items with status 'crawling' and before timestamp 2 hours (7200)
         timestamp = time.time() - created_before  # 2 hours ago
-        expired_crawling_urls = list(self.collection.find({'status':'crawling', 'timestamp': {'$lt': timestamp}}))
+        
+        pipeline = [
+            {"$match": {"status": "crawling", "timestamp": {"$lt": str(timestamp)}}},
+            # {"$count": "count"}
+        ]
+        # The result is a list of documents returned by the aggregation pipeline
+        expired_crawling_urls = list(self.collection.aggregate(pipeline))
         convert_from_crawling_to_to_crawl(expired_crawling_urls)
 
     
