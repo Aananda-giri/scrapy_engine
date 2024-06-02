@@ -67,11 +67,11 @@ class MasterSlave(scrapy.Spider):
         print('------------------------------------')
         # ----------------------------------------------------------------------------
 
-        self.redis_client = redis.Redis(
-            host='redis-18267.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com',
-            port = 18267,
-            password="dnMnzGGKHqKChdx4Dqdf7dMYYAfyQdPL",
-        )
+        # self.redis_client = redis.Redis(
+        #     host='redis-18267.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com',
+        #     port = 18267,
+        #     password="dnMnzGGKHqKChdx4Dqdf7dMYYAfyQdPL",
+        # )
         
         # self.start_urls = self.fetch_start_urls()
         # self.start_urls = [data_item['url'] for data_item in self.mongo.fetch_start_urls()]
